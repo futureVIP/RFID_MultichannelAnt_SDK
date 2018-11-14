@@ -146,8 +146,7 @@ public class ReaderDaoImpl implements ReaderDao {
 		}
 		if (bank == 0 && (begin + size > 4)) {
 			try {
-				throw new RFIDException(
-						"写保留区内容时，begin(写区域中的地址)+size(要写的长度)的值不超过4．请检查输入参数值！");
+				throw new RFIDException("写保留区内容时，begin(写区域中的地址)+size(要写的长度)的值不超过4．请检查输入参数值！");
 			} catch (RFIDException e) {
 				e.printStackTrace();
 			}
