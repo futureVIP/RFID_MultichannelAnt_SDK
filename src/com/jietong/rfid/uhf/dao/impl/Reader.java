@@ -132,21 +132,21 @@ public class Reader extends PACKAGE {
 		}
 		if (reader.head_count < CMD.HEAD_LENGTH) {
 			switch (reader.head_count) {
-			case 0: // 网口起始码
+			case 0:
 				if (data == CMD.NET_START_CODE1) {
 					reader.head_count++;
 				}
 				break;
-			case 1: // 网口起始码
+			case 1:
 				if (data == CMD.NET_START_CODE2) {
 					reader.head_count++;
 				}
 				break;
-			case 2: // cmd
+			case 2:
 				reader.cmd = data;
 				reader.head_count++;
 				break;
-			case 3: // 顺序号
+			case 3:
 				reader.seq = data;
 				reader.head_count++;
 				break;
@@ -185,21 +185,21 @@ public class Reader extends PACKAGE {
 		}
 		if (reader.head_count < CMD.HEAD_LENGTH) {
 			switch (reader.head_count) {
-			case 0: // 网口起始码
+			case 0: 
 				if (data == CMD.NET_START_CODE1) {
 					reader.head_count++;
 				}
 				break;
-			case 1: // 网口起始码
+			case 1: 
 				if (data == CMD.NET_START_CODE2) {
 					reader.head_count++;
 				}
 				break;
-			case 2: // cmd
+			case 2: 
 				reader.cmd = data;
 				reader.head_count++;
 				break;
-			case 3: // 顺序号
+			case 3: 
 				reader.seq = data;
 				reader.head_count++;
 				break;
@@ -742,13 +742,13 @@ public class Reader extends PACKAGE {
 			return R_FAIL;
 		}
 		ByteBuffer buffer = ByteBuffer.allocate(2);
-		if (sendData(reader, CMD.UHF_SET_TAG_FILTER, null, 0)) {
+		if (sendData(reader, CMD.UHF_GET_TAG_FILTER, null, 0)) {
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			if (readData(reader, CMD.UHF_SET_TAG_FILTER, buffer, 2)) {
+			if (readData(reader, CMD.UHF_GET_TAG_FILTER, buffer, 2)) {
 				enableNJ.put(buffer.array()[0]);
 				neighJudgeTime.put(buffer.array()[1]);
 				return R_OK;
@@ -767,8 +767,8 @@ public class Reader extends PACKAGE {
 														// 取消相邻判定，非0，设置相邻判定
 		buf[1] = neighJudgeTime;
 		ByteBuffer buffer = ByteBuffer.allocate(100);
-		if (sendData(reader, CMD.UHF_SET_NEIGH_JUDGE, buf, bufsize)) {
-			if (readData(reader, CMD.UHF_SET_NEIGH_JUDGE, buffer, 1)) {
+		if (sendData(reader, CMD.UHF_SET_TAG_FILTER, buf, bufsize)) {
+			if (readData(reader, CMD.UHF_SET_TAG_FILTER, buffer, 1)) {
 				if (reader.data[0] != ERROR.HOST_ERROR) {
 					return R_OK;
 				}
@@ -1040,8 +1040,8 @@ public class Reader extends PACKAGE {
 			return R_FAIL;
 		}
 		ByteBuffer buffer = ByteBuffer.allocate(100);
-		if (sendData(reader, CMD.UHF_GET_TRIGGER_TIME, null, 0)) {
-			if (readData(reader, CMD.UHF_GET_TRIGGER_TIME, buffer, 20)) {
+		if (sendData(reader, CMD.UHF_GET_CONFIGURE, null, 0)) {
+			if (readData(reader, CMD.UHF_GET_CONFIGURE, buffer, 20)) {
 				return R_OK;
 			}
 		}

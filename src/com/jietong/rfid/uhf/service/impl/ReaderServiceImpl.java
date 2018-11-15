@@ -91,16 +91,6 @@ public class ReaderServiceImpl implements ReaderService {
 	}
 
 	@Override
-	public boolean getDI(Reader reader, ByteBuffer buffer) {
-		return dao.getDI(reader, buffer);
-	}
-
-	@Override
-	public boolean setDO(Reader reader, int port, int state) {
-		return dao.setDO(reader, port, state);
-	}
-
-	@Override
 	public boolean setWorkMode(Reader reader, int mode) {
 		return dao.setWorkMode(reader, mode);
 	}
@@ -130,16 +120,6 @@ public class ReaderServiceImpl implements ReaderService {
 		return -1;
 	}
 
-	@Override
-	public boolean getNeighJudge(Reader reader, ByteBuffer enableNJ,
-			ByteBuffer neighJudgeTime) {
-		return dao.getNeighJudge(reader, enableNJ, neighJudgeTime);
-	}
-
-	@Override
-	public boolean setNeighJudge(Reader reader, byte neighJudgeTime) {
-		return dao.setNeighJudge(reader, neighJudgeTime);
-	}
 
 	@Override
 	public String getDeviceNo(Reader reader) {
@@ -158,84 +138,8 @@ public class ReaderServiceImpl implements ReaderService {
 	}
 
 	@Override
-	public boolean getClock(Reader reader, ByteBuffer clock) {
-		return dao.getClock(reader, clock);
-	}
-
-	@Override
-	public boolean setClock(Reader reader, byte[] clock) {
-		return dao.setClock(reader, clock);
-	}
-
-	@Override
-	public boolean getReadZone(Reader reader, ByteBuffer zone) {
-		return dao.getReadZone(reader, zone);
-	}
-
-	@Override
-	public boolean getReadZonePara(Reader reader, ByteBuffer bank,
-			ByteBuffer begin, ByteBuffer length) {
-		return dao.getReadZonePara(reader, bank, begin, length);
-	}
-
-	@Override
-	public boolean setReadZone(Reader reader, byte state) {
-		return dao.setReadZone(reader, state);
-	}
-
-	@Override
-	public boolean setReadZonePara(Reader reader, byte bank, byte begin,byte length) {
-		return dao.setReadZonePara(reader, bank, begin, length);
-	}
-
-	@Override
-	public boolean getOutputMode(Reader reader, ByteBuffer outputMode) {
-		return dao.getOutputMode(reader, outputMode);
-	}
-
-	@Override
-	public boolean setOutputMode(Reader reader, byte outputMode) {
-		return dao.setOutputMode(reader, outputMode);
-	}
-
-	@Override
-	public boolean readTagBuffer(Reader reader, CallBack getReadData,int readTime) {
-		return dao.readTagBuffer(reader, getReadData, readTime);
-	}
-
-	@Override
-	public boolean resetTagBuffer(Reader reader) {
-		return dao.resetTagBuffer(reader);
-	}
-
-	@Override
 	public boolean killTag(Reader reader, byte[] accessPwd, byte[] killPwd) {
 		return dao.killTag(reader, accessPwd, killPwd);
-	}
-
-	@Override
-	public boolean setAlive(Reader reader, byte interval) {
-		return dao.setAlive(reader, interval);
-	}
-
-	@Override
-	public boolean getRelayAutoState(Reader reader, ByteBuffer state) {
-		return dao.getRelayAutoState(reader, state);
-	}
-
-	@Override
-	public boolean setRelayAutoState(Reader reader, byte time) {
-		return dao.setRelayAutoState(reader, time);
-	}
-
-	@Override
-	public boolean getDeviceConfig(Reader reader, ByteBuffer para) {
-		return dao.getDeviceConfig(reader, para);
-	}
-
-	@Override
-	public boolean setDeviceConfig(Reader reader, byte[] para) {
-		return dao.setDeviceConfig(reader, para);
 	}
 
 	/**
@@ -244,5 +148,51 @@ public class ReaderServiceImpl implements ReaderService {
 	@Override
 	public List<String> findSerialPorts() {
 		return serialPortsService.findSerialPorts();
+	}
+
+	@Override
+	public boolean setOutputMode(Reader reader, byte outputMode) {
+		return dao.setOutputMode(reader, outputMode);
+	}
+
+	@Override
+	public int getOutputMode(Reader reader) {
+		ByteBuffer outputMode = ByteBuffer.allocate(1);
+		boolean result = dao.getOutputMode(reader, outputMode);
+		if(result){
+			return DataConvert.byteToInt(outputMode.array()[0]);
+		}
+		return -1;
+	}
+
+	@Override
+	public int getNeighJudge(Reader reader) {
+		ByteBuffer enableNJ = ByteBuffer.allocate(1);
+		ByteBuffer neighJudgeTime = ByteBuffer.allocate(1);
+		boolean result = dao.getNeighJudge(reader, enableNJ, neighJudgeTime);
+		if(result){
+			return DataConvert.byteToInt(neighJudgeTime.array()[0]);
+		}
+		return -1;
+	}
+
+	@Override
+	public boolean setNeighJudge(Reader reader, byte neighJudgeTime) {
+		return dao.setNeighJudge(reader, neighJudgeTime);
+	}
+
+	@Override
+	public int getRelayAutoState(Reader reader) {
+		ByteBuffer time = ByteBuffer.allocate(1);
+		boolean result = dao.getRelayAutoState(reader, time);
+		if(result){
+			return DataConvert.byteToInt(time.array()[0]);
+		}
+		return -1;
+	}
+
+	@Override
+	public boolean setRelayAutoState(Reader reader, byte time) {
+		return dao.setRelayAutoState(reader, time);
 	}
 }

@@ -2,103 +2,94 @@ package com.jietong.rfid.uhf.service;
 
 import java.nio.ByteBuffer;
 import java.util.List;
-
 import com.jietong.rfid.uhf.dao.impl.Reader;
 import com.jietong.rfid.uhf.entity.AntStruct;
 import com.jietong.rfid.uhf.tool.CallBack;
 import com.jietong.rfid.uhf.tool.CallBackStopReadCard;
+import com.jietong.rfid.uhf.tool.ReaderUtil;
 
 public interface ReaderService {
 	/**
 	 * 串口连接
-	 * 
 	 * @param portName
 	 * @param baudRate
-	 * @return
+	 * @return Reader|null
 	 */
-	public Reader serialPortConnect(String portName, int baudRate);
-
+	Reader serialPortConnect(String portName, int baudRate);
 	/**
 	 * 断开连接
-	 * 
 	 * @param reader
-	 * @return
+	 * @return true|false
 	 */
-	public boolean disconnect(Reader reader);
+	boolean disconnect(Reader reader);
 
 	/**
 	 * 获取版本号
-	 * 
 	 * @param reader
-	 * @return
+	 * @return value|null
 	 */
-	public String version(Reader reader);
-
+	String version(Reader reader);
 	/**
 	 * 单次寻卡
-	 * 
 	 * @param r2k
-	 * @return
+	 * @return true|false
 	 */
 	boolean invOnce(Reader reader,CallBack callBack);
-
 	/**
 	 * 连续寻卡
-	 * 
 	 * @param reader
-	 * @return
+	 * @return true|false
 	 */
 	boolean beginInv(Reader reader,CallBack callBack);
 	/**
 	 * 停止寻卡
 	 * @param reader
-	 * @return
+	 * @return true|false
 	 */
 	boolean stopInv(Reader reader,CallBackStopReadCard callBackStopReadCard);
 	/**
 	 * 获取天线
 	 * @param reader
-	 * @return
+	 * @return AntStruct|null
 	 */
 	AntStruct getAnt(Reader reader);
 	/**
 	 * 设置天线
 	 * @param reader
-	 * @param ant
-	 * @return
+	 * @param ant 天线号
+	 * @return true|false
 	 */
 	boolean setAnt(Reader reader, AntStruct ant);
 	/**
-	 * 写卡
+	 * 定区域写入数据
 	 * @param reader
 	 * @param bank
 	 * @param begin
 	 * @param length
 	 * @param data
 	 * @param password
-	 * @return
+	 * @return true|false
 	 */
 	boolean writeTagData(Reader reader, int bank, int begin, int length,String data, byte[] password);
 	/**
-	 * 
+	 * 指定区域读取数据
 	 * @param reader
-	 * @param bank
-	 * @param begin
-	 * @param size
-	 * @param getBuffer
+	 * @param bank 区域
+	 * @param begin 起始地址
+	 * @param size 长度
 	 * @param password
-	 * @return
+	 * @return value|null
 	 */
 	String readTagData(Reader reader,byte bank, byte begin,byte size,byte[] password);
 	/**
 	 * 锁标签
 	 * @param reader
-	 * @param locktType
+	 * @param lockType 
 	 * @param lockBank
 	 * @param password
-	 * @return
+	 * @return ture|false
 	 */
-	boolean lockTag(Reader reader, byte locktType, byte lockBank,byte[] password);
+	boolean lockTag(Reader reader, byte lockType, byte lockBank,byte[] password);
 	/**
 	 * 获取蜂鸣器状态(0.关闭|1.打开)
 	 * @param reader
@@ -109,84 +100,99 @@ public interface ReaderService {
 	 * 设置蜂鸣器状态(0.关闭|1.打开)
 	 * @param reader
 	 * @param state
-	 * @return
+	 * @return ture|false
 	 */
 	boolean setBuzzer(Reader reader, byte state);
 	/**
-	 * 
+	 * 设置工作模式
 	 * @param reader
-	 * @param buffer
-	 * @return
+	 * @param mode (01主从模式；02定时模式；03触发模式)
+	 * @return true|false
 	 */
-	boolean getDI(Reader reader, ByteBuffer buffer);
-
-	boolean setDO(Reader reader, int port, int state);
-
 	boolean setWorkMode(Reader reader, int mode);
-
-	int getWorkMode(Reader reader);
-
-	boolean setTrigModeDelayTime(Reader reader, byte trigTime);
-
-	int getTrigModeDelayTime(Reader reader);
-
-	boolean getNeighJudge(Reader reader, ByteBuffer enableNJ,ByteBuffer neighJudgeTime);
-
-	boolean setNeighJudge(Reader reader, byte neighJudgeTime);
-
-	String getDeviceNo(Reader reader);
-
-	boolean setDeviceNo(Reader reader, byte deviceNo);
-
-	@Deprecated
-	boolean getClock(Reader reader, ByteBuffer clock);
-	
-	@Deprecated
-	boolean setClock(Reader reader, byte[] clock);
-
-	boolean getReadZone(Reader reader, ByteBuffer zone);
-
-	boolean getReadZonePara(Reader reader, ByteBuffer bank, ByteBuffer begin,ByteBuffer length);
-
-	boolean setReadZone(Reader reader, byte state);
-
-	boolean setReadZonePara(Reader reader, byte bank, byte begin, byte length);
-
-	boolean getOutputMode(Reader reader, ByteBuffer outputMode);
-
-	boolean setOutputMode(Reader reader, byte outputMode);
-
-	boolean readTagBuffer(Reader reader, CallBack getReadData, int readTime);
-
-	boolean resetTagBuffer(Reader reader);
-
-	boolean killTag(Reader reader, byte[] accessPwd, byte[] killPwd);
-
-	boolean setAlive(Reader reader, byte interval);
-
-	boolean getRelayAutoState(Reader reader, ByteBuffer state);
 	/**
-	 * 设置继电器状态
+	 * 读取工作模式
+	 * @param reader
+	 * @return value(01主从模式；02定时模式；03触发模式)|-1
+	 */
+	int getWorkMode(Reader reader);
+	/**
+	 * 设定触发延时
+	 * @param reader
+	 * @param trigTime 
+	 * @return true|false
+	 */
+	boolean setTrigModeDelayTime(Reader reader, byte trigTime);
+	/**
+	 * 读取触发延时
+	 * @param reader
+	 * @return value|-1
+	 */
+	int getTrigModeDelayTime(Reader reader);
+	/**
+	 * 读取设备号
+	 * @param reader 
+	 * @return value|null
+	 */
+	String getDeviceNo(Reader reader);
+	/**
+	 * 设置设备号
+	 * @param reader
+	 * @param deviceNo
+	 * @return true|false
+	 */
+	boolean setDeviceNo(Reader reader, byte deviceNo);
+	/**
+	 * 销毁标签
+	 * @param reader
+	 * @param accessPwd  访问密码
+	 * @param killPwd	  销毁密码
+	 * @return 	true|false
+	 */
+	boolean killTag(Reader reader, byte[] accessPwd, byte[] killPwd);
+	/**
+	 * 设置输出口模式
+	 * @param reader
+	 * @param outputMode
+	 * @return true|false
+	 */
+	boolean setOutputMode(Reader reader, byte outputMode);
+	/**
+	 * 获取输出口模式
+	 * @param reader
+	 * @return value|-1
+	 */
+	int getOutputMode(Reader reader);
+	/**
+	 * 获取相邻判别
+	 * @param reader
+	 * @param trigTime
+	 * @return 
+	 */
+	int getNeighJudge(Reader reader);
+	/**
+	 * 设置相邻判别
+	 * @param reader
+	 * @param neighJudgeTime
+	 * @return true|false
+	 */
+	boolean setNeighJudge(Reader reader, byte neighJudgeTime);
+	/**
+	 * 获取触发延时
+	 * @param reader
+	 * @param state
+	 */
+	int getRelayAutoState(Reader reader);
+	/**
+	 * 设置触发延时
 	 * @param reader
 	 * @param time
 	 * @return
 	 */
 	boolean setRelayAutoState(Reader reader, byte time);
 	/**
-	 * 获取设备配置
-	 * @param reader
-	 * @param para
-	 * @return
+	 * 获取串口列表
+	 * @return 串口列表|null
 	 */
-	boolean getDeviceConfig(Reader reader, ByteBuffer para);
-	/**
-	 * 设置设备配置
-	 * @param reader
-	 * @param para
-	 * @return
-	 */
-	boolean setDeviceConfig(Reader reader, byte[] para);
-	
-	
 	List<String> findSerialPorts();
 }

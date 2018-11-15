@@ -12,6 +12,7 @@ public class CMD {
 	/**
 	 * 串口起始码(已弃用老版本含有)
 	 */
+	@Deprecated
 	public static byte COM_START_CODE0 = (0x1B);
 	/**
 	 * 通讯心跳设定
@@ -218,11 +219,11 @@ public class CMD {
 	 */
 	public static byte UHF_SET_MODE = (0x5A);
 	/**
-	 * 读取触发时间
+	 * 读取触发延时
 	 */
 	public static byte UHF_GET_TRIGGER_TIME = (0x5B);
 	/**
-	 * 设定触发时间
+	 * 设定触发延时
 	 */
 	public static byte UHF_SET_TRIGGER_TIME = (0x5C);
 	/**

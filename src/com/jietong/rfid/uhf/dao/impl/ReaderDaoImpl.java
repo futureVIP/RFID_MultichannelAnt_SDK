@@ -124,14 +124,14 @@ public class ReaderDaoImpl implements ReaderDao {
 		}
 		if (bank < 0 || begin < 0 || size < 0) {
 			try {
-				throw new RFIDException("bank/begin/size必须是正整数！");
+				throw new RFIDException("bank/begin/size Must be a positive integer！");
 			} catch (RFIDException e) {
 				e.printStackTrace();
 			}
 		}
 		if (bank > 3) {
 			try {
-				throw new RFIDException("bank只能是0-3");
+				throw new RFIDException("bank cannot be anything but 0-3");
 			} catch (RFIDException e) {
 				e.printStackTrace();
 			}
@@ -139,21 +139,21 @@ public class ReaderDaoImpl implements ReaderDao {
 		if (bank == 1 && (begin + size > 8 || begin < 2)) {
 			try {
 				throw new RFIDException(
-						"写EPC区内容时，begin必须从2开始，并且begin(写区域中的地址)+size(要写的长度)的值不超过8．请检查输入参数值！");
+						"When writing the contents of the EPC region, begin must start at 2, and begin(write the address in the region)+size(the length to be written) has a value of no more than 8.Check the input parameter values");
 			} catch (RFIDException e) {
 				e.printStackTrace();
 			}
 		}
 		if (bank == 0 && (begin + size > 4)) {
 			try {
-				throw new RFIDException("写保留区内容时，begin(写区域中的地址)+size(要写的长度)的值不超过4．请检查输入参数值！");
+				throw new RFIDException("When writing the tenure contents, begin(the address in the write field)+size(the length to be written) does not exceed 4.Check the input parameter values");
 			} catch (RFIDException e) {
 				e.printStackTrace();
 			}
 		}
 		if (data.length() != 4 * size) {
 			try {
-				throw new RFIDException("data的长度必须是size*4个！");
+				throw new RFIDException("The length of data must be size*4");
 			} catch (RFIDException e) {
 				e.printStackTrace();
 			}
