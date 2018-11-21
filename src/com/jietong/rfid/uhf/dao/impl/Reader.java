@@ -312,8 +312,7 @@ public class Reader extends PACKAGE {
 		reader.threadStart = false; // 设置线程结束标志
 		// ByteBuffer buffer = ByteBuffer.allocate(100);
 		if (sendData(reader, CMD.UHF_INV_MULTIPLY_END, null, 0)) {
-			StopReaderCard stopReaderCard = new StopReaderCard(reader,
-					callBackStopReadCard);
+			StopReaderCard stopReaderCard = new StopReaderCard(reader,callBackStopReadCard);
 			Thread thread = new Thread(stopReaderCard);
 			thread.start();
 			// if (readData(reader, CMD.UHF_INV_MULTIPLY_END, buffer, 1)) {
@@ -425,11 +424,12 @@ public class Reader extends PACKAGE {
 						String EPC = DataConvert.bytesToHexString(Arrays.copyOf(readData, 12));
 						callBack.getReadData(EPC, ant + 1);
 					}
-					String data = DataConvert.bytesToHexString(readData[0]);
 					// 检查是不是结束包
-					if (1 == length && data.equals("F0")) {// 某天线寻卡结束数据包
-						// Base.antIsEnd[PACKAGE.data[0] - 0xF0] = 1;
-						reader.threadStart = false; // 设置线程结束标志
+					if (2 == length) {// 某天线寻卡结束数据包
+						String data = DataConvert.bytesToHexString(readData[1]);
+						if(data.equals("F0")){
+							reader.threadStart = false; // 设置线程结束标志
+						}
 					}
 					break;
 				case 0x2A:// 连续寻卡模式，返回数据
@@ -509,15 +509,20 @@ public class Reader extends PACKAGE {
 		return R_FAIL;
 	}
 
-	protected void threadFunc(Reader reader, CallBack callBack) {
+	protected void threadFunc(final Reader reader, final CallBack callBack) {
 		if (null == reader) {
 			return;
 		}
 		boolean exit = true;
 		do {
-			byte[] buffer = reader.deviceReadBuffer(reader);
+			final byte[] buffer = reader.deviceReadBuffer(reader);
 			if (null != buffer) {
-				reader.deviceTransBuffer(reader, buffer, callBack);
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						reader.deviceTransBuffer(reader, buffer, callBack);
+					}
+				}).start();
 			}
 			if (!reader.threadStart) {
 				if (null == buffer) {
