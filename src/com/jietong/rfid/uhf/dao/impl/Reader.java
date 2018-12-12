@@ -1447,7 +1447,7 @@ public class Reader extends PACKAGE {
 		ByteBuffer buffer = ByteBuffer.allocate(100);
 		if (sendData(reader, CMD.UHF_SET_FREQUENCY, buf, 8)) {
 			try {
-				Thread.sleep(300);
+				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
