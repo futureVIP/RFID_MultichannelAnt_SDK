@@ -35,6 +35,18 @@ public class Regex {
 		String regex ="^[0-9.]+$";
 		return match(regex,str);
 	}
+	
+	/**
+	 * 只能是数字和.出现
+	 * @param str 字符
+	 * @param decimalLength 小数点长度
+	 * @return
+	 */
+	public static boolean IsMatchDouble(String str,int decimalLength) {
+		String regex ="^[1-9][0-9]*(\\.[0-9]{1," + decimalLength + "})?$"; //decimalLength为小数位数
+		return match(regex,str);
+	}
+	
 	/**
 	 * @param regex 正则表达式字符串
 	 * @param str 要匹配的字符串

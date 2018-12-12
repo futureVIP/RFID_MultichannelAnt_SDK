@@ -1,90 +1,91 @@
 package com.jietong.rfid.uhf.dao;
 
-import java.nio.ByteBuffer;
-
+import java.util.Map;
 import com.jietong.rfid.uhf.dao.impl.Reader;
 import com.jietong.rfid.uhf.entity.AntStruct;
-import com.jietong.rfid.uhf.tool.CallBack;
-import com.jietong.rfid.uhf.tool.CallBackStopReadCard;
+import com.jietong.rfid.uhf.entity.FrequencyPoint;
+import com.jietong.rfid.uhf.service.CallBack;
+import com.jietong.rfid.uhf.service.CallBackStopReadCard;
 
 public interface ReaderDao {
 	Reader serialPortConnect(String portName, int baudRate);
 
-	public void deviceUnInit(Reader reader);
-
-	public boolean disconnect(Reader reader);
-
-	public String version(Reader reader);
-
-	boolean invOnce(Reader reader,CallBack callBack);
+	boolean disconnect(Reader reader);
 	
-	boolean beginInv(Reader reader,CallBack callBack);
+	String version(Reader reader);
 	
-	boolean stopInv(Reader reader,CallBackStopReadCard callBackStopReadCard);
+	@Deprecated
+	boolean invOnce(Reader reader, CallBack callBack);
 
+	@Deprecated
+	boolean beginInv(Reader reader, CallBack callBack);
+
+	@Deprecated
+	boolean stopInv(Reader reader, CallBackStopReadCard callBackStopReadCard);
+	
 	AntStruct getAnt(Reader reader);
-
+	
 	boolean setAnt(Reader reader, AntStruct ant);
-
+	
 	boolean writeTagData(Reader reader, int bank, int begin, int length,String data, byte[] password);
 	
-	boolean readTagData(Reader reader,byte bank, byte begin,byte size, ByteBuffer getBuffer, byte[] password);
-
+	String readTagData(Reader reader, byte bank, byte begin, byte length,byte[] password);
+	
 	boolean lockTag(Reader reader, byte locktType, byte lockBank,byte[] password);
-
+	
 	int getBuzzer(Reader reader);
-
+	
 	boolean setBuzzer(Reader reader, byte state);
-
-	boolean getDI(Reader reader, ByteBuffer buffer);
-
-	boolean setDO(Reader reader, int port, int state);
-
+	
 	boolean setWorkMode(Reader reader, int mode);
-
-	boolean getWorkMode(Reader reader, ByteBuffer workMode);
-
+	
+	int getWorkMode(Reader reader);
+	
 	boolean setTrigModeDelayTime(Reader reader, byte trigTime);
-
-	boolean getTrigModeDelayTime(Reader reader, ByteBuffer trigTime);
-
-	boolean getNeighJudge(Reader reader, ByteBuffer enableNJ,ByteBuffer neighJudgeTime);
-
-	boolean setNeighJudge(Reader reader, byte neighJudgeTime);
-
-	boolean getDeviceNo(Reader reader, ByteBuffer deviceNo);
-
-	boolean setDeviceNo(Reader reader, byte deviceNo);
-
-	boolean getClock(Reader reader, ByteBuffer clock);
-
-	boolean setClock(Reader reader, byte[] clock);
-
-	boolean getReadZone(Reader reader, ByteBuffer zone);
-
-	boolean getReadZonePara(Reader reader, ByteBuffer bank, ByteBuffer begin,ByteBuffer length);
-
-	boolean setReadZone(Reader reader, byte state);
-
-	boolean setReadZonePara(Reader reader, byte bank, byte begin, byte length);
-
-	boolean getOutputMode(Reader reader, ByteBuffer outputMode);
-
-	boolean setOutputMode(Reader reader, byte outputMode);
-
-	boolean readTagBuffer(Reader reader, CallBack getReadData, int readTime);
-
-	boolean resetTagBuffer(Reader reader);
-
-	boolean killTag(Reader reader, byte[] accessPwd, byte[] killPwd);
-
-	boolean setAlive(Reader reader, byte interval);
-
-	boolean getRelayAutoState(Reader reader, ByteBuffer state);
-
-	boolean setRelayAutoState(Reader reader, byte time);
-
-	boolean getDeviceConfig(Reader reader, ByteBuffer para);
+	
+	int getTrigModeDelayTime(Reader reader);
+	
+	String getDeviceNo(Reader reader);
+	
+	boolean setDeviceNo(Reader reader, int deviceNo);
 
 	boolean setDeviceConfig(Reader reader, byte[] para);
+	
+	boolean killTag(Reader reader, byte[] accessPwd, byte[] killPwd);
+	
+	boolean setOutputMode(Reader reader, byte outputMode);
+	
+	int getOutputMode(Reader reader);
+	
+	Map<String,Byte> getNeighJudge(Reader reader);
+	
+	boolean setNeighJudge(Reader reader, byte neighJudgeTime);
+	
+	int getRelayAutoState(Reader reader);
+	
+	boolean setRelayAutoState(Reader reader, byte time);
+	
+	/**************2018-12-03 new add ****************/
+	
+	boolean invOnceV2(Reader reader, CallBack callBack);
+
+	boolean beginInvV2(Reader reader, CallBack callBack);
+
+	boolean stopInvV2(Reader reader, CallBackStopReadCard callBackStopReadCard);
+
+	Map<String, Integer> getInvPatternConfig(Reader reader);
+
+	boolean setInvPatternConfig(Reader reader, byte session, byte qValue,byte tagFocus, byte abValue);
+
+	boolean factoryDataReset(Reader reader);
+
+	Map<String, Boolean> getInvOutPutData(Reader reader);
+
+	boolean setInvOutPutData(Reader reader, byte antenna, byte rssi,byte deviceNo, byte accessDoorDirection);
+
+	Map<String,Byte> getAntState(Reader reader);
+	
+	FrequencyPoint getFrequency(Reader reader);
+	
+	boolean setFrequency(Reader reader,int type,double frequencyFixed,boolean[] frequencyHopping);
 }

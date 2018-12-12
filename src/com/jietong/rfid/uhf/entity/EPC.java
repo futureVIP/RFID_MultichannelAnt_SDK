@@ -3,26 +3,41 @@ package com.jietong.rfid.uhf.entity;
 public class EPC {
 	private int id;
 	private String epc;
+	private String rssi;
 	private int count;
-	private int ant;
-	
-    public EPC() {
-    	
-    }
+	private String ant;
+	private String deviceNo;
+	private String direction;
 
-    public EPC(int id, String epc, int count, int ant) {
-        this.id = id;
-        this.epc = epc;
-        this.count = count;
-        this.ant = ant;
-    }
+	public EPC() {
 
-	public int getAnt() {
+	}
+
+	public EPC(int id, String epc, String rssi, int count, String ant,
+			String deviceNo, String direction) {
+		this.id = id;
+		this.epc = epc;
+		this.rssi = rssi;
+		this.count = count;
+		this.ant = ant;
+		this.deviceNo = deviceNo;
+		this.direction = direction;
+	}
+
+	public String getAnt() {
 		return ant;
 	}
 
-	public void setAnt(int ant) {
+	public void setAnt(String ant) {
 		this.ant = ant;
+	}
+
+	public String getRssi() {
+		return rssi;
+	}
+
+	public void setRssi(String rssi) {
+		this.rssi = rssi;
 	}
 
 	/**
@@ -70,6 +85,22 @@ public class EPC {
 		this.count = count;
 	}
 
+	public String getDeviceNo() {
+		return deviceNo;
+	}
+
+	public void setDeviceNo(String deviceNo) {
+		this.deviceNo = deviceNo;
+	}
+
+	public String getDirection() {
+		return direction;
+	}
+
+	public void setDirection(String direction) {
+		this.direction = direction;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -77,6 +108,15 @@ public class EPC {
 	 */
 	@Override
 	public String toString() {
-		return "EPC [id=" + id + ", epc=" + epc + ", count=" + count + "]";
+		StringBuffer sb = new StringBuffer();
+		sb.append("[");
+		sb.append("[id=" + id);
+		sb.append(", epc=" + epc);
+		sb.append(", rssi=" + rssi);
+		sb.append(", count=" + count);
+		sb.append(", deviceNo=" + deviceNo);
+		sb.append(", direction=" + direction);
+		sb.append("]");
+		return sb.toString();
 	}
 }

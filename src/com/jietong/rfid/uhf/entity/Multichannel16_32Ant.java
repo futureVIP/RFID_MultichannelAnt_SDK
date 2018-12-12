@@ -3,38 +3,11 @@ package com.jietong.rfid.uhf.entity;
 import java.nio.ByteBuffer;
 
 import com.jietong.rfid.uhf.dao.impl.Reader;
+import com.jietong.rfid.uhf.tool.BitOperation;
 import com.jietong.rfid.util.DataConvert;
 
 public class Multichannel16_32Ant {
-	public static byte setAnt32(byte[] enable) {
-		byte ant = 0;
-		if (enable[0] == 1) {
-			ant |= 0x80;
-		}
-		if (enable[1] == 1) {
-			ant |= 0x40;
-		}
-		if (enable[2] == 1) {
-			ant |= 0x20;
-		}
-		if (enable[3] == 1) {
-			ant |= 0x10;
-		}
-		if (enable[4] == 1) {
-			ant |= 0x08;
-		}
-		if (enable[5] == 1) {
-			ant |= 0x04;
-		}
-		if (enable[6] == 1) {
-			ant |= 0x02;
-		}
-		if (enable[7] == 1) {
-			ant |= 0x01;
-		}
-		return ant;
-	}
-
+	
 	public static byte[] reverse32Ant(byte[] ant, int start, int end, int start2,int end2) {
 		byte[] antten = new byte[8];
 		int count = 0;
@@ -58,10 +31,10 @@ public class Multichannel16_32Ant {
 		byte[] ant3 = reverse32Ant(antStruct.enable, 24, 27, 8, 11);
 		byte[] ant4 = reverse32Ant(antStruct.enable, 28, 31, 12, 15);
 		
-		antenner[0] = setAnt32(ant1);
-		antenner[1] = setAnt32(ant2);
-		antenner[2] = setAnt32(ant3);
-		antenner[3] = setAnt32(ant4);
+		antenner[0] = BitOperation.bytesToByte(ant1);
+		antenner[1] = BitOperation.bytesToByte(ant2);
+		antenner[2] = BitOperation.bytesToByte(ant3);
+		antenner[3] = BitOperation.bytesToByte(ant4);
 
 		byte[] time = new byte[4];
 		time = DataConvert.intToByteArray(antStruct.dwellTime[0]);
@@ -128,10 +101,10 @@ public class Multichannel16_32Ant {
 		byte[] ant3 = reverse16Ant(antStruct.enable, 8, 11);
 		byte[] ant4 = reverse16Ant(antStruct.enable, 12, 15);
 		
-		antenner[0] = setAnt32(ant1);
-		antenner[1] = setAnt32(ant2);
-		antenner[2] = setAnt32(ant3);
-		antenner[3] = setAnt32(ant4);
+		antenner[0] = BitOperation.bytesToByte(ant1);
+		antenner[1] = BitOperation.bytesToByte(ant2);
+		antenner[2] = BitOperation.bytesToByte(ant3);
+		antenner[3] = BitOperation.bytesToByte(ant4);
 
 		byte[] time = new byte[4];
 		time = DataConvert.intToByteArray(antStruct.dwellTime[0]);

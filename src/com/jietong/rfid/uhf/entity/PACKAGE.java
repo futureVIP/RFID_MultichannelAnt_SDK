@@ -3,15 +3,12 @@ package com.jietong.rfid.uhf.entity;
 import android_serialport_api.SerialPortDevice;
 
 public class PACKAGE {
-	public static boolean R_FAIL = false;
-	public static boolean R_OK = true;
-	
 	/**
 	 * 版本号
 	 */
 	private String version;
 	/**
-	 * 变动的4通道/8通道/16通道/32通道
+	 * 4通道/8通道/16通道/32通道
 	 */
 	private int channel;
 	
@@ -27,9 +24,11 @@ public class PACKAGE {
 	}
 
 	public void setVersion(String version) {
-		this.channel = Integer.parseInt(version.substring(version.length()-2, version.length()));
+		String getChannel = version.substring(version.length()-2, version.length());
+		this.channel = Integer.parseInt(getChannel);
 		this.version = version;
 	}
+	
 	/**
 	 * 串口
 	 */
@@ -50,12 +49,11 @@ public class PACKAGE {
 	/**
 	 * 串口号
 	 */
-	public int commNo = 0;
+	public int serialPortNo = 0;
 	/**
 	 * 端口号
 	 */
 	public int port = 115200;
-	
 	/**
 	 * 存储主机字符串，端口固定为20058
 	 */
@@ -63,23 +61,19 @@ public class PACKAGE {
 	/**
 	 * TrandPackage中包头计算
 	 */
-	public int head_count = 0;
+	public int headCount = 0;
 	/**
 	 * 转换过程中数据计数
 	 */
-	public int data_count = 0;
-	/**
-	 * 串口连接
-	 */
-	public boolean bIsComPort = false;
+	public int dataCount = 0;
 	/*
 	 * 从接收缓冲区转换后的实际数据长度
 	 */
-	public int pkg_len = 0;
+	public int receiveLength = 0;
 	/**
-	 * 串口号
+	 * 串口连接
 	 */
-	public boolean bIsCom;
+	public boolean isSerialPortConnect;
 	/**
 	 * 2个字节的起始码
 	 */
